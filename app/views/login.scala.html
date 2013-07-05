@@ -1,0 +1,30 @@
+@(model: ProfileModel)
+
+@extraScripts = {
+	
+}
+
+@extraCss = {
+	
+}
+
+@main("Login")(extraScripts)(extraCss) {
+	<form method="post">
+		<fieldset>
+			<legend>Login</legend>
+			<ul>
+				<li>
+					<label for="username">Username</label>
+					<input type="text" id="username" name="username" value="@model.username" />
+				</li>
+				<li>
+					<label for="password">Password</label>
+					<input type="password" id="password" name="password" />
+				</li>
+				<li>
+					<button type="submit">Login</button>
+				</li>
+			</ul>
+		</fieldset>		
+	</form>
+}

@@ -1,0 +1,16 @@
+@(model: ProfileModel)
+
+@extraScripts = {
+	
+}
+
+@extraCss = {
+	
+}
+
+@main("Profile")(extraScripts)(extraCss) {
+	<h1>Profile</h1>
+  <form method="post" action="@routes.Profile.logout">
+    <button>Logout</button>
+  </form>
+}
