@@ -8,13 +8,30 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/app.css")">
         @extraCss
-        
-        <script src="@routes.Assets.at("js/vendor/custom.modernizr.js")"></script>
-        <script src="@routes.Assets.at("js/jquery-2.0.3.min.js")"></script>
     </head>
     <body>
+        <nav class="top-bar" data-options="is_hover:false">
+            <ul class="title-area">
+                <li class="name"><h1><a href="@routes.Application.index">Wallpaper</a></h1></li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+            <section class="top-bar-section">
+                <ul class="right">
+                    <li class="divider hide-for-small"></li>
+                    <li><a href="@routes.Profile.login">Login</a></li>
+                    <li class="divider hide-for-small"></li>
+                    <li><a href="@routes.Profile.login">Register</a></li>
+                </ul>
+            </section>
+        </nav>
+
         @content
 
+        <script src="@routes.Assets.at("js/jquery-2.0.3.min.js")"></script>
+        <script src="@routes.Assets.at("js/vendor/custom.modernizr.js")"></script>
+        <script src="@routes.Assets.at("js/foundation/foundation.js")"></script>
+        <script src="@routes.Assets.at("js/foundation/foundation.topbar.js")"></script>
+        <script src="@routes.Assets.at("js/views/main.js")"></script>
         @extraScripts
     </body>
 </html>
