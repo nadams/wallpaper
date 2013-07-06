@@ -24,6 +24,7 @@ dist
 ### SublimeText ###
 # SublimeText project files
 *.sublime-workspace
+*.sublime-project
 
 ### PlayFramework ###
 # Extracted from https://github.com/ulrich/macaron-factory/blob/master/.gitignore
