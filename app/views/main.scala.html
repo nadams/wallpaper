@@ -21,7 +21,14 @@
                 <ul class="right">
                     @header.username match {
                         case Some(x) => { 
-                            <p></p>
+                            <li class="divider hide-for-small"></li>
+                            <li><a href="@routes.Profile.index">Profile</a></li>
+                            <li class="divider hide-for-small"></li>
+                            <li class="has-form">
+                                <form method="post" action="@routes.Profile.logout">
+                                    <button class="small">Logout</button>
+                                </form>
+                            </li>
                         }
 
                         case None => { 
