@@ -66,6 +66,7 @@ project/plugins/project/
 
 ### Compass ###
 .sass-cache
+public/css/*.css
 
 ### SASS ###
 ### SASS Ignores - "Sassy CSS" http://sass-lang.com/
