@@ -13,9 +13,14 @@ object ApplicationBuild extends Build {
     anorm
   )
 
+  val compassTask = TaskKey[Unit]("compass", "Compile sass")
+  val compassTaskSettings = compassTask := {
+    Seq("compass", "compile") !
+  }
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
+    compassTaskSettings,
+    compile in Compile <<= (compile in Compile).dependsOn(compassTask)
   )
 
 }
