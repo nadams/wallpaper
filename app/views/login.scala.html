@@ -1,4 +1,4 @@
-@(model: ProfileModel)
+@(model: ProfileModel)(implicit header: MenuModel)
 
 @extraScripts = {
 	
@@ -8,7 +8,7 @@
 	
 }
 
-@main("Login")(extraScripts)(extraCss) {
+@main("Login", extraCss, extraScripts) {
 	<form method="post">
 		<fieldset>
 			<legend>Login</legend>

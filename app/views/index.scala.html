@@ -1,4 +1,4 @@
-@(message: String)
+@(message: String)(implicit header: MenuModel)
 
 @extraCss = {
 	
@@ -8,7 +8,7 @@
 
 }
 
-@main("Application")(extraScripts)(extraCss) {
+@main("Application", extraCss, extraScripts) {
 	<h1>Application</h1>
   <a href="@routes.Profile.login">Login</a>
 }

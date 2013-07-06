@@ -7,12 +7,12 @@ import components._
 import models._
 import views._
 
-object Profile extends Controller with Secured {
+object Profile extends Controller with Secured with ProvidesHeader {
 	def index = IsAuthenticated { username => implicit request =>
 		Ok(views.html.profile(ProfileModel()))
 	}
 
-	def login = Action {
+	def login = Action { implicit request =>
 		Ok(views.html.login(ProfileModel()))
 	}
 

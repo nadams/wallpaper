@@ -1,4 +1,4 @@
-@(model: ProfileModel)
+@(model: ProfileModel)(implicit header: MenuModel)
 
 @extraScripts = {
 	
@@ -8,7 +8,7 @@
 	
 }
 
-@main("Profile")(extraScripts)(extraCss) {
+@main("Profile", extraCss, extraScripts) {
 	<h1>Profile</h1>
   <form method="post" action="@routes.Profile.logout">
     <button>Logout</button>

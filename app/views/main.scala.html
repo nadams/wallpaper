@@ -1,4 +1,4 @@
-@(title: String)(extraScripts: Html)(extraCss: Html)(content: Html)
+@(title: String, extraCss: Html, extraScripts: Html)(content: Html)(implicit header: MenuModel)
 
 <!DOCTYPE html>
 
@@ -19,10 +19,18 @@
             </ul>
             <section class="top-bar-section">
                 <ul class="right">
-                    <li class="divider hide-for-small"></li>
-                    <li><a href="@routes.Profile.login">Login</a></li>
-                    <li class="divider hide-for-small"></li>
-                    <li><a href="@routes.Profile.login">Register</a></li>
+                    @header.username match {
+                        case Some(x) => { 
+                            <p></p>
+                        }
+
+                        case None => { 
+                            <li class="divider hide-for-small"></li>
+                            <li><a href="@routes.Profile.login">Login</a></li>
+                            <li class="divider hide-for-small"></li>
+                            <li><a href="@routes.Profile.login">Register</a></li>
+                        }
+                    }
                 </ul>
             </section>
         </nav>
