@@ -34,9 +34,12 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def performRegistration = Action { implicit request =>
-		//val form = LoginForm.registerForm
+		val form = LoginForm.registerForm
 
-		Ok("")
+		form.bindFromRequest.fold(
+			errors => BadRequest(html.profile.register(errors.get)),
+			data => Redirect(routes.Application.index).withSession(SessionKeys.email -> data.email)
+		)
 	}
 
 	object LoginForm {
@@ -52,13 +55,13 @@ object Profile extends Controller with Secured with ProvidesHeader {
 			})
 		) 
 
-		// def registerForm = Form(
-		// 	tuple(
-		// 		"email" -> email,
-		// 		"password" -> nonEmptyText(minLength = 6),
-		// 		"verifyPassword" -> nonEmptyText(minLength = 6)
-		// 	) (RegisterModel.apply)(RegisterModel.unapply)
-		// 	verifying("Passwords to not match", result => result.password == result.verifyPassword)
-		// )
+		def registerForm = Form(
+			mapping(
+				"email" -> email,
+				"password" -> nonEmptyText(minLength = 6),
+				"passwordVerify" -> nonEmptyText(minLength = 6)
+			) (RegisterModel.apply)(RegisterModel.unapply)
+			verifying("Passwords do not match", result => result.password == result.passwordVerify)
+		)
 	}
 }
