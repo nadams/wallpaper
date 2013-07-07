@@ -4,7 +4,7 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import components._
-import models._
+import models.profile._
 import views._
 
 object Profile extends Controller with Secured with ProvidesHeader {

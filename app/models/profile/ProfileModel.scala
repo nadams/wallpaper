@@ -1,4 +1,4 @@
-package models
+package models.profile
 
 case class ProfileModel(username: String)
 
