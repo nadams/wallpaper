@@ -29,6 +29,16 @@ object Profile extends Controller with Secured with ProvidesHeader {
 		)
 	}
 
+	def register = Action { implicit request =>
+		Ok(html.profile.register(RegisterModel()))
+	}
+
+	def performRegistration = Action { implicit request =>
+		val form = LoginForm.registerForm
+
+		Ok("")
+	}
+
 	object LoginForm {
 		val userService = UserComponentRegistry.userService
 
@@ -42,5 +52,13 @@ object Profile extends Controller with Secured with ProvidesHeader {
 		) 
 
 		def loginFormToProfileModel(form: Form[(String, String)]) = ProfileModel()
+
+		def registerForm = Form(
+			tuple(
+				"username" -> text,
+				"password" -> text,
+				"verifyPassword" -> text
+			)
+		)
 	}
 }
