@@ -39,7 +39,7 @@ eclipse
 lib
 log
 logs
-/modules
+modules
 precompiled
 project/project
 project/target
@@ -69,6 +69,7 @@ project/plugins/project/
 .sass-cache
 public/css/*.css
 public/css/**/*.css
+!sass/modules/
 
 ### SASS ###
 ### SASS Ignores - "Sassy CSS" http://sass-lang.com/
