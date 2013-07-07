@@ -44,6 +44,26 @@ trait UserRepositoryComponent {
 			}
 		}
 
+		def insertUser(user: User) : Option[User] = {
+			DB.withConnection { implicit connection => 
+				SQL(
+					s"""
+						INSERT INTO $table(`email`, `password`, `salt`)
+						VALUES({email}, {password}, {salt}, NOW())
+
+						SELECT LAST_INSERT_ID()
+					"""
+				).on(
+					"email" -> user.email,
+					"password" -> user.password,
+					"salt" -> user.salt
+				).executeInsert()
+			} match {
+				case Some(id: Long) => Some(User(id, user.email, user.password, user.salt))
+				case None => None
+			}
+		}
+
 		object UserMapper {
 			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = {
 				query
