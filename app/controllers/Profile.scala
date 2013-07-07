@@ -9,11 +9,11 @@ import views._
 
 object Profile extends Controller with Secured with ProvidesHeader {
 	def index = IsAuthenticated { username => implicit request =>
-		Ok(views.html.profile(ProfileModel()))
+		Ok(views.html.profile.profile(ProfileModel()))
 	}
 
 	def login = Action { implicit request =>
-		Ok(views.html.login(ProfileModel()))
+		Ok(views.html.profile.login(ProfileModel()))
 	}
 
 	def logout = Action { implicit request =>
@@ -24,7 +24,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 		val form = LoginForm.loginForm
 
 		form.bindFromRequest.fold(
-			errors => BadRequest(html.login(LoginForm.loginFormToProfileModel(form))),
+			errors => BadRequest(html.profile.login(LoginForm.loginFormToProfileModel(form))),
 			user => Redirect(routes.Profile.index).withSession("username" -> user._1)
 		)
 	}
