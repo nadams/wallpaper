@@ -5,30 +5,32 @@
 }
 
 @extraScripts = {
-	
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")">
 }
 
 @main("Register", extraCss, extraScripts) {
-	<form method="post">
-		<fieldset>
-			<legend>Register</legend>
-			<ul>
-				<li>
-					<label for="username">Username</label>
-					<input type="text" id="username" name="username" />
-				</li>
-				<li>
-					<label for="password">Password</label>
-					<input type="password" id="password" name="password" />
-				</li>
-				<li>
-					<label for="passwordVerify">Verify Password</label>
-					<input type="password" id="passwordVerify" name="passwordVerify" />
-				</li>
-				<li>
-					<button type="submit">Register</button>
-				</li>
-			</ul>
-		</fieldset>
-	</form>
+	<div class="register-grid">
+		<form method="post">
+			<fieldset>
+				<legend>Register</legend>
+				<ul class="row">
+					<li>
+						<label for="username">Username</label>
+						<input type="text" id="username" name="username" />
+					</li>
+					<li>
+						<label for="password">Password</label>
+						<input type="password" id="password" name="password" />
+					</li>
+					<li>
+						<label for="passwordVerify">Verify Password</label>
+						<input type="password" id="passwordVerify" name="passwordVerify" />
+					</li>
+					<li>
+						<button type="submit">Register</button>
+					</li>
+				</ul>
+			</fieldset>
+		</form>
+	</div>
 }
