@@ -9,11 +9,11 @@ import views._
 
 object Profile extends Controller with Secured with ProvidesHeader {
 	def index = IsAuthenticated { username => implicit request =>
-		Ok(views.html.profile.profile(ProfileModel()))
+		Ok(views.html.profile.profile(ProfileModel("", "")))
 	}
 
 	def login = Action { implicit request =>
-		Ok(views.html.profile.login(ProfileModel()))
+		Ok(views.html.profile.login(ProfileModel("", "")))
 	}
 
 	def logout = Action { implicit request =>
@@ -24,8 +24,8 @@ object Profile extends Controller with Secured with ProvidesHeader {
 		val form = LoginForm.loginForm
 
 		form.bindFromRequest.fold(
-			errors => BadRequest(html.profile.login(LoginForm.loginFormToProfileModel(form))),
-			user => Redirect(routes.Profile.index).withSession(SessionKeys.email -> user._1)
+			errors => BadRequest(html.profile.login(form.get)),
+			user => Redirect(routes.Profile.index).withSession(SessionKeys.email -> user.email)
 		)
 	}
 
@@ -34,7 +34,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def performRegistration = Action { implicit request =>
-		val form = LoginForm.registerForm
+		//val form = LoginForm.registerForm
 
 		Ok("")
 	}
@@ -43,22 +43,22 @@ object Profile extends Controller with Secured with ProvidesHeader {
 		val userService = UserComponentRegistry.userService
 
 		val loginForm = Form(
-			tuple(
+			mapping(
 				"email" -> text, 
 				"password" -> text
-			) verifying ("Invalid username or password", result => result match {
-				case (email, password) => userService.authenticate(email, password)
+			) (ProfileModel.apply)(ProfileModel.unapply)
+			verifying ("Invalid username or password", result => result match {
+				case ProfileModel(email, password) => userService.authenticate(email, password)
 			})
 		) 
 
-		def loginFormToProfileModel(form: Form[(String, String)]) = ProfileModel()
-
-		def registerForm = Form(
-			tuple(
-				"email" -> text,
-				"password" -> text,
-				"verifyPassword" -> text
-			)
-		)
+		// def registerForm = Form(
+		// 	tuple(
+		// 		"email" -> email,
+		// 		"password" -> nonEmptyText(minLength = 6),
+		// 		"verifyPassword" -> nonEmptyText(minLength = 6)
+		// 	) (RegisterModel.apply)(RegisterModel.unapply)
+		// 	verifying("Passwords to not match", result => result.password == result.verifyPassword)
+		// )
 	}
 }
