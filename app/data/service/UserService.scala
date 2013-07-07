@@ -15,22 +15,22 @@ trait UserServiceComponent { this: UserRepositoryComponent =>
 			userRepository.getUserByUsername(username).exists(x => x.password == password.salt(x.salt).bcrypt)
 
 		def createNewUser(email: String, password: String) : Option[User] = {
-			val salt = SeedGenerator()
+			val salt = SeedGenerator.generateSeed()
 			val hashedPassword = password.salt(salt).bcrypt
 
 			userRepository.insertUser(User(0, email, hashedPassword, salt))
 		}
-	}
-}
 
-object SeedGenerator {
-	val generator = SecureRandom.getInstance("SHA1PRNG")
+		object SeedGenerator {
+			val generator = SecureRandom.getInstance("SHA1PRNG")
 
-	def apply() : String = {
-		val bytes = new Array[Byte](32)
+			def generateSeed() : String = {
+				val bytes = new Array[Byte](32)
 
-		generator.nextBytes(bytes)
+				generator.nextBytes(bytes)
 
-		new String(bytes)
+				new String(bytes)
+			}
+		}
 	}
 }
