@@ -1,11 +1,23 @@
 @(model: models.profile.RegisterModel)(implicit header: MenuModel)
 
 @extraCss = {
-	
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")">
 }
 
 @extraScripts = {
-	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")">
+	<script>
+		var wallpaper = wallpaper || { };
+		wallpaper.profile = wallpaper.profile || { };
+		wallpaper.profile.register = { 
+			data: {
+				elementIds: {
+					usernameField: "username",
+					passwordField: "password",
+					passwordVerifyField: "passwordVerify"
+				}
+			}
+		};
+	</script>
 }
 
 @main("Register", extraCss, extraScripts) {
@@ -13,23 +25,32 @@
 		<form method="post">
 			<fieldset>
 				<legend>Register</legend>
-				<ul class="row">
-					<li>
+				<div class="row">
+					<div class="large-4 columns">
 						<label for="username">Username</label>
 						<input type="text" id="username" name="username" />
-					</li>
-					<li>
+					</div>
+					<div class="large-6 column">
+						<p>some placeholder text</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
 						<label for="password">Password</label>
 						<input type="password" id="password" name="password" />
-					</li>
-					<li>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
 						<label for="passwordVerify">Verify Password</label>
 						<input type="password" id="passwordVerify" name="passwordVerify" />
-					</li>
-					<li>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
 						<button type="submit">Register</button>
-					</li>
-				</ul>
+					</div>
+				</div>
 			</fieldset>
 		</form>
 	</div>
