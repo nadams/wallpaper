@@ -1,7 +1,7 @@
 package models.profile
 
 case class RegisterModel(
-	username: Option[String], 
+	email: Option[String], 
 	password: Option[String], 
 	passwordVerify: Option[String]
 )

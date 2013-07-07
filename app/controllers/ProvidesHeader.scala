@@ -6,7 +6,7 @@ import models.MenuModel
 
 trait ProvidesHeader {
 	implicit def header[A](implicit request: Request[A]) : MenuModel = {
-		val user = request.session.get("username")
+		val user = request.session.get(SessionKeys.email)
 
 		MenuModel(user)
 	}

@@ -25,7 +25,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 
 		form.bindFromRequest.fold(
 			errors => BadRequest(html.profile.login(LoginForm.loginFormToProfileModel(form))),
-			user => Redirect(routes.Profile.index).withSession("username" -> user._1)
+			user => Redirect(routes.Profile.index).withSession(SessionKeys.email -> user._1)
 		)
 	}
 
@@ -44,10 +44,10 @@ object Profile extends Controller with Secured with ProvidesHeader {
 
 		val loginForm = Form(
 			tuple(
-				"username" -> text, 
+				"email" -> text, 
 				"password" -> text
 			) verifying ("Invalid username or password", result => result match {
-				case (username, password) => userService.authenticate(username, password)
+				case (email, password) => userService.authenticate(email, password)
 			})
 		) 
 
@@ -55,7 +55,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 
 		def registerForm = Form(
 			tuple(
-				"username" -> text,
+				"email" -> text,
 				"password" -> text,
 				"verifyPassword" -> text
 			)
