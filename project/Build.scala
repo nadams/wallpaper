@@ -10,7 +10,8 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     // Add your project dependencies here,
     jdbc,
-    anorm
+    anorm,
+    "mysql" % "mysql-connector-java" % "5.1.25"
   )
 
   val compassTask = TaskKey[Unit]("compass", "Compile sass")
@@ -22,5 +23,4 @@ object ApplicationBuild extends Build {
     compassTaskSettings,
     compile in Compile <<= (compile in Compile).dependsOn(compassTask)
   )
-
 }
