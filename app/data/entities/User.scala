@@ -1,3 +1,8 @@
 package data.entities
 
-case class User(username: String, password: String)
+case class User(
+	id: Int, 
+	email: String, 
+	password: String, 
+	salt: String
+)
