@@ -1,6 +1,8 @@
 package data.repository
 
 import anorm._ 
+import anorm.SqlParser._
+import java.sql._
 import play.api.db.DB
 import play.api.Play.current
 
@@ -16,31 +18,37 @@ trait UserRepositoryComponent {
 
 		def getUserById(id: Int) : Option[User] = {
 			DB.withConnection { implicit connection => 
-				SQL(
+				val query = SQL(
 					s"""
-						SELECT id, email, password, salt, dateCreated
+						SELECT id, email, password, salt
 						FROM $table AS u
 						WHERE u.id = {id}
 					"""
-				).on("id" -> id)().collect {
-					case Row(id: Int, email: String, password: String, salt: String, dateCreated: java.sql.Timestamp) =>
-						User(id, email, password, salt)
-				}.headOption
+				).on("id" -> id)
+
+				UserMapper(query)
 			}
 		}
 
 		def getUserByUsername(email: String) : Option[User] = {
 			DB.withConnection { implicit connection => 
-				SQL(
+				val query = SQL(
 					s"""
 						SELECT id, email, password, salt, dateCreated
 						FROM $table AS u
 						WHERE u.email = {email}
 					"""
-				).on("email" -> email)().collect {
-					case Row(id: Int, email: String, password: String, salt: String, dateCreated: java.sql.Timestamp) =>
-						User(id, email, password, salt)
-				}.headOption
+				).on("email" -> email)
+
+				UserMapper(query)
+			}
+		}
+
+		object UserMapper {
+			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = {
+				query
+				.singleOpt(int("id") ~ str("email") ~ str("password") ~ str("salt") map(flatten))
+				.map(x => User(x._1, x._2, x._3, x._4))
 			}
 		}
 	}
