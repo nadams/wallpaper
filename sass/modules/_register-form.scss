@@ -1,0 +1,12 @@
+.register-grid { 
+	@include grid-row; 
+	@include panel;
+
+	& > hgroup { 
+		@include grid-column(4); 
+	}
+
+	& > section { 
+		@include grid-column(8); 
+	}
+}
