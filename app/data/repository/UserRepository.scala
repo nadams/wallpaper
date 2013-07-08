@@ -1,6 +1,5 @@
 package data.repository
 
-import java.nio.charset.Charset
 import org.joda.time.{ DateTime, DateTimeZone }
 
 import anorm._ 
@@ -65,8 +64,6 @@ trait UserRepositoryComponent {
 		
 
 		object UserMapper {
-			val charset = Charset.forName("US-ASCII")
-
 			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = query
 				.singleOpt(long("id") ~ str("email") ~ str("password") ~ date("dateCreated") map(flatten))
 				.map(x => User(x._1, x._2, x._3, new DateTime(x._4, DateTimeZone.UTC)))
