@@ -1,18 +1,21 @@
 package data.service
 
+import org.mindrot.jbcrypt.BCrypt
+
 import data.entities._
 import data.repository._
-
-import com.roundeights.hasher.Implicits._
 
 trait UserServiceComponent { this: UserRepositoryComponent =>
 	val userService = new UserService
 
 	class UserService {
 		def authenticate(username: String, password: String) =
-			userRepository.getUserByUsername(username).exists(x => password bcrypt= x.password)
+			userRepository.getUserByUsername(username).exists(x => BCrypt.checkpw(password, x.password))
 
-		def createNewUser(email: String, password: String) : Option[User] = 
-			userRepository.insertUser(User(0, email, password.bcrypt))
+		def createNewUser(email: String, password: String) : Option[User] = {
+			val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
+
+			userRepository.insertUser(User(0, email, hashedPassword))
+		}
 	}
 }
