@@ -1,10 +1,10 @@
 package data.entities
 
-import org.joda.time.{ DateTime, DateTimeZone }
+import org.joda.time.{ DateTime, DateTimeZone, Chronology }
 
 case class User(
 	id: Long, 
 	email: String, 
 	password: String,
-	dateCreated: DateTime = new DateTime(DateTimeZone.UTC)
+	dateCreated: DateTime = DateTime.now.toDateTime(DateTimeZone.UTC)
 )

@@ -1,4 +1,4 @@
-@(model: models.profile.ProfileModel)(implicit header: MenuModel)
+@(model: models.profile.ProfileViewModel)(implicit header: MenuModel)
 
 @extraScripts = {
 	
@@ -10,4 +10,10 @@
 
 @main("Profile", extraCss, extraScripts) {
 	<h1>Profile</h1>
+  <ul>
+    <li>@model.id</li>
+    <li>@model.email</li>
+    <li>@model.password</li>
+    <li>@model.dateCreated</li>
+  </ul>
 }

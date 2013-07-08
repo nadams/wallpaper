@@ -1,12 +1,15 @@
 package data.repository
 
 import org.joda.time.{ DateTime, DateTimeZone }
+import org.joda.time.format.DateTimeFormat
+import java.sql.Timestamp
 
 import anorm._ 
 import anorm.SqlParser._
 import java.sql._
 import play.api.db.DB
 import play.api.Play.current
+import AnormExtension._
 
 import data.entities._
 
@@ -16,8 +19,8 @@ trait UserRepositoryComponent {
 	class UserRepository {
 		val table = "user"
 		val columns = "id, email, password, dateCreated"
-
-		val user = User(1, "test", "password")
+		val pattern = "yyyy-MM-dd HH:mm:ss"
+		val formatter = DateTimeFormat.forPattern(pattern)
 
 		def getUserById(id: Int) : Option[User] =
 			DB.withConnection { implicit connection => 
@@ -29,7 +32,7 @@ trait UserRepositoryComponent {
 					"""
 				).on("id" -> id)
 
-				UserMapper(query)
+				mapUser(query)
 			}
 
 		def getUserByUsername(email: String) : Option[User] =
@@ -42,7 +45,7 @@ trait UserRepositoryComponent {
 					"""
 				).on("email" -> email)
 
-				UserMapper(query)
+				mapUser(query)
 			}
 
 		def insertUser(user: User) : Option[User] = 
@@ -55,18 +58,15 @@ trait UserRepositoryComponent {
 				).on(
 					"email" -> user.email,
 					"password" -> user.password,
-					"dateCreated" -> user.dateCreated
+					"dateCreated" -> user.dateCreated.toString(pattern)
 				).executeInsert()
 			} match {
 				case Some(long) => Some(User(long, user.email, user.password, user.dateCreated))
 				case None => None
 			}
 		
-
-		object UserMapper {
-			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = query
-				.singleOpt(long("id") ~ str("email") ~ str("password") ~ date("dateCreated") map(flatten))
-				.map(x => User(x._1, x._2, x._3, new DateTime(x._4, DateTimeZone.UTC)))
-		}
+		def mapUser(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = query
+			.singleOpt(long("id") ~ str("email") ~ str("password") ~ get[DateTime]("dateCreated") map(flatten))
+			.map (x => User(x._1, x._2, x._3, x._4))
 	}
 }

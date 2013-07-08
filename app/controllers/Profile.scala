@@ -8,8 +8,12 @@ import models.profile._
 import views._
 
 object Profile extends Controller with Secured with ProvidesHeader {
+	val userService = UserComponentRegistry.userService
+
 	def index = IsAuthenticated { username => implicit request =>
-		Ok(views.html.profile.profile(ProfileModel("", "")))
+		val user = userService.getUserByUsername(username).get
+
+		Ok(views.html.profile.profile(ProfileViewModel(user.id, user.email, user.password, user.dateCreated)))
 	}
 
 	def login = Action { implicit request =>
