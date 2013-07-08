@@ -1,5 +1,7 @@
 package data.repository
 
+import java.nio.charset.Charset
+
 import anorm._ 
 import anorm.SqlParser._
 import java.sql._
@@ -14,13 +16,13 @@ trait UserRepositoryComponent {
 	class UserRepository {
 		val table = "user"
 
-		val user = User(1, "test", "password", "")
+		val user = User(1, "test", "password")
 
 		def getUserById(id: Int) : Option[User] = {
 			DB.withConnection { implicit connection => 
 				val query = SQL(
 					s"""
-						SELECT id, email, password, salt
+						SELECT id, email, password, dateCreated
 						FROM $table AS u
 						WHERE u.id = {id} ;
 					"""
@@ -34,7 +36,7 @@ trait UserRepositoryComponent {
 			DB.withConnection { implicit connection => 
 				val query = SQL(
 					s"""
-						SELECT id, email, password, salt, dateCreated
+						SELECT id, email, password, dateCreated
 						FROM $table AS u
 						WHERE u.email = {email} ;
 					"""
@@ -48,25 +50,26 @@ trait UserRepositoryComponent {
 			DB.withConnection { implicit connection => 
 				SQL(
 					s"""
-						INSERT INTO $table(`email`, `password`, `salt`, `dateCreated`)
-						VALUES({email}, {password}, {salt}, NOW()) ;
+						INSERT INTO $table(`email`, `password`, `dateCreated`)
+						VALUES({email}, {password}, NOW()) ;
 					"""
 				).on(
 					"email" -> user.email,
-					"password" -> user.password,
-					"salt" -> user.salt
+					"password" -> user.password
 				).executeInsert()
 			} match {
-				case Some(long) => Some(User(long, user.email, user.password, user.salt))
+				case Some(long) => Some(User(long, user.email, user.password))
 				case None => None
 			}
 		}
 
 		object UserMapper {
+			val charset = Charset.forName("US-ASCII")
+
 			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = {
 				query
-				.singleOpt(long("id") ~ str("email") ~ str("password") ~ str("salt") map(flatten))
-				.map(x => User(x._1, x._2, x._3, x._4))
+				.singleOpt(long("id") ~ str("email") ~ str("password") map(flatten))
+				.map(x => User(x._1, x._2, x._3))
 			}
 		}
 	}
