@@ -1,6 +1,7 @@
 package data.repository
 
 import java.nio.charset.Charset
+import org.joda.time.{ DateTime, DateTimeZone }
 
 import anorm._ 
 import anorm.SqlParser._
@@ -15,6 +16,7 @@ trait UserRepositoryComponent {
 	
 	class UserRepository {
 		val table = "user"
+		val columns = "id, email, password, dateCreated"
 
 		val user = User(1, "test", "password")
 
@@ -22,7 +24,7 @@ trait UserRepositoryComponent {
 			DB.withConnection { implicit connection => 
 				val query = SQL(
 					s"""
-						SELECT id, email, password, dateCreated
+						SELECT $columns
 						FROM $table AS u
 						WHERE u.id = {id} ;
 					"""
@@ -36,7 +38,7 @@ trait UserRepositoryComponent {
 			DB.withConnection { implicit connection => 
 				val query = SQL(
 					s"""
-						SELECT id, email, password, dateCreated
+						SELECT $columns
 						FROM $table AS u
 						WHERE u.email = {email} ;
 					"""
@@ -51,14 +53,15 @@ trait UserRepositoryComponent {
 				SQL(
 					s"""
 						INSERT INTO $table(`email`, `password`, `dateCreated`)
-						VALUES({email}, {password}, NOW()) ;
+						VALUES({email}, {password}, {dateCreated}) ;
 					"""
 				).on(
 					"email" -> user.email,
-					"password" -> user.password
+					"password" -> user.password,
+					"dateCreated" -> user.dateCreated
 				).executeInsert()
 			} match {
-				case Some(long) => Some(User(long, user.email, user.password))
+				case Some(long) => Some(User(long, user.email, user.password, user.dateCreated))
 				case None => None
 			}
 		}
@@ -68,8 +71,8 @@ trait UserRepositoryComponent {
 
 			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = {
 				query
-				.singleOpt(long("id") ~ str("email") ~ str("password") map(flatten))
-				.map(x => User(x._1, x._2, x._3))
+				.singleOpt(long("id") ~ str("email") ~ str("password") ~ date("dateCreated") map(flatten))
+				.map(x => User(x._1, x._2, x._3, new DateTime(x._4, DateTimeZone.UTC)))
 			}
 		}
 	}
