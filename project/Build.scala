@@ -11,7 +11,8 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     jdbc,
     anorm,
-    "mysql" % "mysql-connector-java" % "5.1.25"
+    "mysql" % "mysql-connector-java" % "5.1.25",
+    "org.mindrot" % "jbcrypt" % "0.3m"
   )
 
   val compassTask = TaskKey[Unit]("compass", "Compile sass")

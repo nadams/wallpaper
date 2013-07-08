@@ -22,7 +22,7 @@ trait UserRepositoryComponent {
 					s"""
 						SELECT id, email, password, salt
 						FROM $table AS u
-						WHERE u.id = {id}
+						WHERE u.id = {id} ;
 					"""
 				).on("id" -> id)
 
@@ -36,7 +36,7 @@ trait UserRepositoryComponent {
 					s"""
 						SELECT id, email, password, salt, dateCreated
 						FROM $table AS u
-						WHERE u.email = {email}
+						WHERE u.email = {email} ;
 					"""
 				).on("email" -> email)
 
@@ -48,10 +48,8 @@ trait UserRepositoryComponent {
 			DB.withConnection { implicit connection => 
 				SQL(
 					s"""
-						INSERT INTO $table(`email`, `password`, `salt`)
-						VALUES({email}, {password}, {salt}, NOW())
-
-						SELECT LAST_INSERT_ID()
+						INSERT INTO $table(`email`, `password`, `salt`, `dateCreated`)
+						VALUES({email}, {password}, {salt}, NOW()) ;
 					"""
 				).on(
 					"email" -> user.email,
@@ -59,7 +57,7 @@ trait UserRepositoryComponent {
 					"salt" -> user.salt
 				).executeInsert()
 			} match {
-				case Some(id: Long) => Some(User(id, user.email, user.password, user.salt))
+				case Some(long) => Some(User(long, user.email, user.password, user.salt))
 				case None => None
 			}
 		}
@@ -67,7 +65,7 @@ trait UserRepositoryComponent {
 		object UserMapper {
 			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = {
 				query
-				.singleOpt(int("id") ~ str("email") ~ str("password") ~ str("salt") map(flatten))
+				.singleOpt(long("id") ~ str("email") ~ str("password") ~ str("salt") map(flatten))
 				.map(x => User(x._1, x._2, x._3, x._4))
 			}
 		}

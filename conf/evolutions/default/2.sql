@@ -1,4 +1,4 @@
 # user schema
 
 # --- !Ups
-ALTER TABLE user MODIFY Id BIGINT ;
+ALTER TABLE user MODIFY Id BIGINT NOT NULL AUTO_INCREMENT;

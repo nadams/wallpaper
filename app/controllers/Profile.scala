@@ -38,7 +38,13 @@ object Profile extends Controller with Secured with ProvidesHeader {
 
 		form.bindFromRequest.fold(
 			errors => BadRequest(html.profile.register(errors.get)),
-			data => Redirect(routes.Application.index).withSession(SessionKeys.email -> data.email)
+			data => {
+				val userService = UserComponentRegistry.userService
+				userService.createNewUser(data.email, data.password) match {
+					case Some(x) => Redirect(routes.Application.index).withSession(SessionKeys.email -> x.email)
+					case None => InternalServerError("Could not register user")
+				}
+			}
 		)
 	}
 
