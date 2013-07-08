@@ -20,7 +20,7 @@ trait UserRepositoryComponent {
 
 		val user = User(1, "test", "password")
 
-		def getUserById(id: Int) : Option[User] = {
+		def getUserById(id: Int) : Option[User] =
 			DB.withConnection { implicit connection => 
 				val query = SQL(
 					s"""
@@ -32,9 +32,8 @@ trait UserRepositoryComponent {
 
 				UserMapper(query)
 			}
-		}
 
-		def getUserByUsername(email: String) : Option[User] = {
+		def getUserByUsername(email: String) : Option[User] =
 			DB.withConnection { implicit connection => 
 				val query = SQL(
 					s"""
@@ -46,9 +45,8 @@ trait UserRepositoryComponent {
 
 				UserMapper(query)
 			}
-		}
 
-		def insertUser(user: User) : Option[User] = {
+		def insertUser(user: User) : Option[User] = 
 			DB.withConnection { implicit connection => 
 				SQL(
 					s"""
@@ -64,16 +62,14 @@ trait UserRepositoryComponent {
 				case Some(long) => Some(User(long, user.email, user.password, user.dateCreated))
 				case None => None
 			}
-		}
+		
 
 		object UserMapper {
 			val charset = Charset.forName("US-ASCII")
 
-			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = {
-				query
+			def apply(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = query
 				.singleOpt(long("id") ~ str("email") ~ str("password") ~ date("dateCreated") map(flatten))
 				.map(x => User(x._1, x._2, x._3, new DateTime(x._4, DateTimeZone.UTC)))
-			}
 		}
 	}
 }
