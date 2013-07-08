@@ -1,6 +1,7 @@
 package data.service
 
-import java.security._
+import java.nio.charset.Charset
+import java.security.SecureRandom
 
 import data.entities._
 import data.repository._
@@ -25,11 +26,11 @@ trait UserServiceComponent { this: UserRepositoryComponent =>
 			val generator = SecureRandom.getInstance("SHA1PRNG")
 
 			def generateSeed() : String = {
-				val bytes = new Array[Byte](32)
+				val bytes = new Array[Byte](64)
 
 				generator.nextBytes(bytes)
 
-				new String(bytes)
+				new String(bytes, Charset.forName("US-ASCII"))
 			}
 		}
 	}
