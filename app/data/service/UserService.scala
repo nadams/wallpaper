@@ -21,5 +21,6 @@ trait UserServiceComponent { this: UserRepositoryComponent =>
 		def getUserByUsername(username: String) : Option[User] = userRepository.getUserByUsername(username)
 
 		def userExists(username: String) : Boolean = getUserByUsername(username).isDefined
+		def userDoesNotExist(username: String) = !userExists(username)
 	}
 }
