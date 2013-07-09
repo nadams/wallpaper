@@ -22,48 +22,45 @@ trait UserRepositoryComponent {
 		val pattern = "yyyy-MM-dd HH:mm:ss"
 		val formatter = DateTimeFormat.forPattern(pattern)
 
-		def getUserById(id: Int) : Option[User] =
-			DB.withConnection { implicit connection => 
-				val query = SQL(
-					s"""
-						SELECT $columns
-						FROM $table AS u
-						WHERE u.id = {id} ;
-					"""
-				).on("id" -> id)
+		def getUserById(id: Int) : Option[User] = DB.withConnection { implicit connection => 
+			val query = SQL(
+				s"""
+					SELECT $columns
+					FROM $table AS u
+					WHERE u.id = {id} ;
+				"""
+			).on("id" -> id)
 
-				mapUser(query)
-			}
+			mapUser(query)
+		}
 
-		def getUserByUsername(email: String) : Option[User] =
-			DB.withConnection { implicit connection => 
-				val query = SQL(
-					s"""
-						SELECT $columns
-						FROM $table AS u
-						WHERE u.email = {email} ;
-					"""
-				).on("email" -> email)
+		def getUserByUsername(email: String) : Option[User] = DB.withConnection { implicit connection => 
+			val query = SQL(
+				s"""
+					SELECT $columns
+					FROM $table AS u
+					WHERE u.email = {email} ;
+				"""
+			).on("email" -> email)
 
-				mapUser(query)
-			}
+			mapUser(query)
+		}
 
-		def insertUser(user: User) : Option[User] = 
-			DB.withConnection { implicit connection => 
-				SQL(
-					s"""
-						INSERT INTO $table(`email`, `password`, `dateCreated`)
-						VALUES({email}, {password}, {dateCreated}) ;
-					"""
-				).on(
-					"email" -> user.email,
-					"password" -> user.password,
-					"dateCreated" -> user.dateCreated.toString(pattern)
-				).executeInsert()
-			} match {
-				case Some(long) => Some(User(long, user.email, user.password, user.dateCreated))
-				case None => None
-			}
+		def insertUser(user: User) : Option[User] = DB.withConnection { implicit connection => 
+			SQL(
+				s"""
+					INSERT INTO $table(`email`, `password`, `dateCreated`)
+					VALUES({email}, {password}, {dateCreated}) ;
+				"""
+			).on(
+				"email" -> user.email,
+				"password" -> user.password,
+				"dateCreated" -> user.dateCreated.toString(pattern)
+			).executeInsert()
+		} match {
+			case Some(long) => Some(User(long, user.email, user.password, user.dateCreated))
+			case None => None
+		}
 		
 		def mapUser(query: SimpleSql[Row])(implicit connection: Connection) : Option[User] = query
 			.singleOpt(long("id") ~ str("email") ~ str("password") ~ get[DateTime]("dateCreated") map(flatten))
