@@ -68,6 +68,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 				"password" -> nonEmptyText(minLength = 6),
 				"passwordVerify" -> nonEmptyText(minLength = 6)
 			) (RegisterModel.apply)(RegisterModel.unapply)
+			verifying("Username already taken", result => !userService.userExists(result.email))
 			verifying("Passwords do not match", result => result.password == result.passwordVerify)
 		)
 	}

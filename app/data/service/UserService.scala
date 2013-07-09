@@ -18,7 +18,8 @@ trait UserServiceComponent { this: UserRepositoryComponent =>
 			userRepository.insertUser(User(0, email, hashedPassword))
 		}
 
-		def getUserByUsername(username: String) : Option[User] =
-			userRepository.getUserByUsername(username)
+		def getUserByUsername(username: String) : Option[User] = userRepository.getUserByUsername(username)
+
+		def userExists(username: String) : Boolean = getUserByUsername(username).isDefined
 	}
 }
