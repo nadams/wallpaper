@@ -2,6 +2,7 @@ package models.profile
 
 import org.joda.time.DateTime
 import play.api.libs.json.Json
+import formatters.DateTimeFormatter._
 
 case class ProfileModel(email: String, password: String)
 
