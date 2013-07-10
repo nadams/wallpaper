@@ -1,7 +1,14 @@
 @(model: models.profile.ProfileViewModel)(implicit header: MenuModel)
 
+@import play.api.libs.json.Json
+
 @extraScripts = {
-	
+	<script>
+    var wallpaper = wallpaper || {};
+    wallpaper.profile = wallpaper.profile || {};
+    wallpaper.profile.data = @Html(Json.toJson(model).toString)
+  </script>
+  <script src="@routes.Assets.at("js/views/profile/profile.js")"></script>
 }
 
 @extraCss = {
@@ -11,9 +18,9 @@
 @main("Profile", extraCss, extraScripts) {
 	<h1>Profile</h1>
   <ul>
-    <li>@model.id</li>
-    <li>@model.email</li>
-    <li>@model.password</li>
-    <li>@model.dateCreated</li>
+    <li data-bind="text: id"></li>
+    <li data-bind="text: email"></li>
+    <li data-bind="text: password"></li>
+    <li data-bind="text: dateCreated"></li>
   </ul>
 }
