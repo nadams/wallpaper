@@ -2,3 +2,7 @@ $topbar-bg: #222;
 $topbar-dropdown-bg: $topbar-bg;
 
 @import "foundation/components/top-bar";
+
+.top-bar a {
+	text-decoration: none;
+}

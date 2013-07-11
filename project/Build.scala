@@ -17,7 +17,7 @@ object ApplicationBuild extends Build {
 
   val compassTask = TaskKey[Unit]("compass", "Compile sass")
   val compassTaskSettings = compassTask := {
-    Seq("lib/compass.bat", "compile") !
+    Seq("compass", "compile") !
   }
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
