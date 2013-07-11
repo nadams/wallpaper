@@ -34,7 +34,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def register = Action { implicit request =>
-		Ok(html.profile.register(RegisterModel()))
+		Ok(html.profile.register(RegisterModelMapper.create()))
 	}
 
 	def performRegistration = Action { implicit request =>
