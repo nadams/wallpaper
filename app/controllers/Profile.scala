@@ -60,7 +60,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 			verifying ("Invalid username or password", result => result match {
 				case ProfileModel(email, password) => userService.authenticate(email, password)
 			})
-		) 
+		)  	 	
 
 		def registerForm = Form(
 			mapping(

@@ -1,4 +1,4 @@
-@(model: models.profile.RegisterModel)(implicit header: MenuModel)
+@(model: models.profile.RegisterModel, errors: Option[models.profile.RegisterModelErrors] = None)(implicit header: MenuModel)
 
 @extraCss = {
 	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")">

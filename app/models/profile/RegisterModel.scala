@@ -9,10 +9,15 @@ case class RegisterModel(
 )
 
 object RegisterModel {
-	implicit val readsRegisterModel = Json.format[RegisterModel]
 	implicit val writesRegisterModel = Json.writes[RegisterModel]
 }
 
-object RegisterModelMapper {
-	def create = RegisterModel("", "", "")
+case class RegisterModelErrors(
+	emailError: Option[String],
+	passwordError: Option[String],
+	passwordVerifyError: Option[String]
+)
+
+object RegisterModelErrors {
+	implicit val writesRegisterModelErrors = Json.writes[RegisterModelErrors]
 }
