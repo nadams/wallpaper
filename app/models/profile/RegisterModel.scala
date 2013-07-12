@@ -13,7 +13,7 @@ object RegisterModel {
 }
 
 case class RegisterModelErrors(
-	emailError: Option[String],
+	usernameError: Option[String],
 	passwordError: Option[String],
 	passwordVerifyError: Option[String]
 )

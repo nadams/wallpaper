@@ -1,7 +1,9 @@
 @(model: models.profile.RegisterModel, errors: Option[models.profile.RegisterModelErrors] = None)(implicit header: MenuModel)
 
+@import play.api.libs.json.Json
+
 @extraCss = {
-	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")">
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")" />
 }
 
 @extraScripts = {
@@ -10,6 +12,7 @@
 		wallpaper.profile = wallpaper.profile || { };
 		wallpaper.profile.register = { 
 			data: {
+				errors: @Html(Json.toJson(errors).toString),
 				elementIds: {
 					emailField: "email",
 					passwordField: "password",
@@ -18,6 +21,7 @@
 			}
 		};
 	</script>
+	<script src="@routes.Assets.at("js/views/profile/register.js")"></script>
 }
 
 @main("Register", extraCss, extraScripts) {
@@ -27,8 +31,9 @@
 				<legend>Register</legend>
 				<div class="row">
 					<div class="large-4 columns">
-						<label for="email">Email</label>
-						<input type="text" id="email" name="email" value="@model.email" />
+						<label for="email" data-bind="css: { 'error': usernameHasError }">Email</label>
+						<input type="text" id="email" name="email" value="@model.email" data-bind="css: { 'error': usernameHasError }" />
+						<small data-bind="if: usernameHasError, text: usernameError" class="error"></small>
 					</div>
 					<div class="large-6 column">
 						<p>some placeholder text</p>
@@ -36,14 +41,16 @@
 				</div>
 				<div class="row">
 					<div class="large-4 columns">
-						<label for="password">Password</label>
-						<input type="password" id="password" name="password" />
+						<label for="password" data-bind="css: { 'error': passwordHasError }">Password</label>
+						<input type="password" id="password" name="password" data-bind="css: { 'error': passwordHasError }" />
+						<small data-bind="if: passwordHasError, text: passwordError" class="error"></small>
 					</div>
 				</div>
 				<div class="row">
 					<div class="large-4 columns">
-						<label for="passwordVerify">Verify Password</label>
-						<input type="password" id="passwordVerify" name="passwordVerify" />
+						<label for="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }">Verify Password</label>
+						<input type="password" id="passwordVerify" name="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }" />
+						<small data-bind="if: passwordVerifyHasError, text: passwordVerifyError" class="error"></small>
 					</div>
 				</div>
 				<div class="row">
