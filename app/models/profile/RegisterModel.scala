@@ -5,8 +5,7 @@ import play.api.libs.json.Json
 case class RegisterModel(
 	email: String, 
 	password: String, 
-	passwordVerify: String,
-	errors: Seq[String]
+	passwordVerify: String
 )
 
 object RegisterModel {
@@ -15,5 +14,5 @@ object RegisterModel {
 }
 
 object RegisterModelMapper {
-	def create = RegisterModel("", "", "", Seq())
+	def create = RegisterModel("", "", "")
 }
