@@ -44,7 +44,17 @@ object Profile extends Controller with Secured with ProvidesHeader {
 		val form = LoginForm.registerForm
 
 		form.bindFromRequest.fold(
-			errors => BadRequest(html.profile.register(errors.get)),
+			errors => {
+				def getErrorMessage(field: Field) : Tuple2[String, Option[String]] = (field.value.getOrElse(""), field.error.map(_.message))
+
+				val username = getErrorMessage(errors("username"))
+				val password = getErrorMessage(errors("password"))
+				val passwordVerify = getErrorMessage(errors("passwordVerify"))
+
+				val errorModel = RegisterModelErrors(username._2, password._2, passwordVerify._2)
+				val model = RegisterModel(username._1, "", "")
+				BadRequest(html.profile.register(model, Some(errorModel))) 
+			},
 			data => userService.createNewUser(data.email, data.password) match {
 				case Some(x) => Redirect(routes.Application.index).withSession(SessionKeys.email -> x.email)
 				case None => InternalServerError("Could not register user")
