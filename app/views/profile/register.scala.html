@@ -12,7 +12,7 @@
 		wallpaper.profile = wallpaper.profile || { };
 		wallpaper.profile.register = { 
 			data: {
-				errors: @Html(Json.toJson(errors).toString),
+				errors: @Html(Json.toJson(errors).toString) || {},
 				elementIds: {
 					emailField: "email",
 					passwordField: "password",
@@ -33,7 +33,9 @@
 					<div class="large-4 columns">
 						<label for="email" data-bind="css: { 'error': usernameHasError }">Email</label>
 						<input type="text" id="email" name="email" value="@model.email" data-bind="css: { 'error': usernameHasError }" />
-						<small data-bind="if: usernameHasError, text: usernameError" class="error"></small>
+						<!-- ko if: usernameHasError -->
+						<small data-bind="text: usernameError" class="error"></small>
+						<!-- /ko -->
 					</div>
 					<div class="large-6 column">
 						<p>some placeholder text</p>
@@ -43,14 +45,18 @@
 					<div class="large-4 columns">
 						<label for="password" data-bind="css: { 'error': passwordHasError }">Password</label>
 						<input type="password" id="password" name="password" data-bind="css: { 'error': passwordHasError }" />
-						<small data-bind="if: passwordHasError, text: passwordError" class="error"></small>
+						<!-- ko if: passwordHasError -->
+						<small data-bind="text: passwordError" class="error"></small>
+						<!-- /ko -->
 					</div>
 				</div>
 				<div class="row">
 					<div class="large-4 columns">
 						<label for="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }">Verify Password</label>
 						<input type="password" id="passwordVerify" name="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }" />
-						<small data-bind="if: passwordVerifyHasError, text: passwordVerifyError" class="error"></small>
+						<!-- ko if: passwordVerifyHasError -->
+						<small data-bind="text: passwordVerifyError" class="error"></small>
+						<!-- /ko -->
 					</div>
 				</div>
 				<div class="row">
