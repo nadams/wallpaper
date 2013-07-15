@@ -47,12 +47,12 @@ object Profile extends Controller with Secured with ProvidesHeader {
 			errors => {
 				def getErrorMessage(field: Field) : Tuple2[String, Option[String]] = (field.value.getOrElse(""), field.error.map(_.message))
 
-				val username = getErrorMessage(errors("username"))
+				val email = getErrorMessage(errors("email"))
 				val password = getErrorMessage(errors("password"))
 				val passwordVerify = getErrorMessage(errors("passwordVerify"))
 
-				val errorModel = RegisterModelErrors(username._2, password._2, passwordVerify._2)
-				val model = RegisterModel(username._1, "", "")
+				val errorModel = RegisterModelErrors(email._2, password._2, passwordVerify._2)
+				val model = RegisterModel(email._1, "", "")
 				BadRequest(html.profile.register(model, Some(errorModel))) 
 			},
 			data => userService.createNewUser(data.email, data.password) match {
@@ -77,11 +77,10 @@ object Profile extends Controller with Secured with ProvidesHeader {
 
 		def registerForm = Form(
 			mapping(
-				"email" -> email,
+				"email" -> email.verifying("Username already taken", userService.userDoesNotExist(_)),
 				"password" -> nonEmptyText(minLength = 6),
 				"passwordVerify" -> nonEmptyText(minLength = 6)
 			) (RegisterModel.apply)(RegisterModel.unapply)
-			verifying("Username already taken", result => userService.userDoesNotExist(result.email))
 			verifying("Passwords do not match", result => result.password == result.passwordVerify)
 		)
 	}
