@@ -1,0 +1,4 @@
+error.email=Invalid email address
+error.emailTaken=Email already taken
+error.invalidUsernamePassword=Invalid username or password
+error.passwordsDoNotMatch=Passwords do not match

@@ -3,6 +3,7 @@ package controllers
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.i18n._
 import components._
 import models.profile._
 import views._
@@ -45,7 +46,8 @@ object Profile extends Controller with Secured with ProvidesHeader {
 
 		form.bindFromRequest.fold(
 			errors => {
-				def getErrorMessage(field: Field) : Tuple2[String, Option[String]] = (field.value.getOrElse(""), field.error.map(_.message))
+				def getErrorMessage(field: Field) : Tuple2[String, Option[String]] = 
+					(field.value.getOrElse(""), field.error.map { error => Messages(error.message) })
 
 				val email = getErrorMessage(errors("email"))
 				val password = getErrorMessage(errors("password"))
@@ -70,18 +72,18 @@ object Profile extends Controller with Secured with ProvidesHeader {
 				"email" -> text, 
 				"password" -> text
 			) (ProfileModel.apply)(ProfileModel.unapply)
-			verifying ("Invalid username or password", result => result match {
+			verifying ("error.invalidUsernamePassword", result => result match {
 				case ProfileModel(email, password) => userService.authenticate(email, password)
 			})
 		)  	 	
 
 		def registerForm = Form(
 			mapping(
-				"email" -> email.verifying("Username already taken", userService.userDoesNotExist(_)),
+				"email" -> email.verifying("error.emailTaken", userService.userDoesNotExist(_)),
 				"password" -> nonEmptyText(minLength = 6),
 				"passwordVerify" -> nonEmptyText(minLength = 6)
 			) (RegisterModel.apply)(RegisterModel.unapply)
-			verifying("Passwords do not match", result => result.password == result.passwordVerify)
+			verifying("error.passwordsDoNotMatch", result => result.password == result.passwordVerify)
 		)
 	}
 }
