@@ -47,7 +47,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 		form.bindFromRequest.fold(
 			errors => {
 				def getErrorMessage(field: Field) : Tuple2[String, Option[String]] = 
-					(field.value.getOrElse(""), field.error.map { error => Messages(error.message) })
+					(field.value.getOrElse(""), field.error.map { error => Messages(error.message, error.args: _*) })
 
 				val email = getErrorMessage(errors("email"))
 				val password = getErrorMessage(errors("password"))
