@@ -9,4 +9,8 @@
 	& > section { 
 		@include grid-column(8); 
 	}
+
+  ul li {
+    list-style-type: none;
+  }
 }

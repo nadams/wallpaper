@@ -1,0 +1,4 @@
+.form-error {
+  @include alert-base;
+  @include alert-style($alert-color);
+}

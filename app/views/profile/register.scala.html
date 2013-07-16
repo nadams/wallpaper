@@ -21,6 +21,7 @@
 			}
 		};
 	</script>
+	<script src="@routes.Assets.at("js/foundation/foundation.alerts.js")"></script>
 	<script src="@routes.Assets.at("js/lodash.min.js")"></script>
 	<script src="@routes.Assets.at("js/views/profile/register.js")"></script>
 }
@@ -40,7 +41,7 @@
 					</div>
 					<div class="large-6 column">
 						<ul data-bind="foreach: formErrors">
-							<li data-bind="text: $data"></li>
+							<li><div data-alert="" class="form-error" data-bind="text: $data"></div></li>
 						</ul>
 					</div>
 				</div>
