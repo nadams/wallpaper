@@ -6,6 +6,7 @@ import play.api.data.Forms._
 import play.api.i18n._
 import components._
 import models.profile._
+import models.FieldExtensions.formattedMessage
 import views._
 
 object Profile extends Controller with Secured with ProvidesHeader {
@@ -46,12 +47,9 @@ object Profile extends Controller with Secured with ProvidesHeader {
 
 		form.bindFromRequest.fold(
 			errors => {
-				def getErrorMessage(field: Field) : Tuple2[String, Option[String]] = 
-					(field.value.getOrElse(""), field.error.map { error => Messages(error.message, error.args: _*) })
-
-				val email = getErrorMessage(errors("email"))
-				val password = getErrorMessage(errors("password"))
-				val passwordVerify = getErrorMessage(errors("passwordVerify"))
+				val email = errors("email").formattedMessage
+				val password = errors("password").formattedMessage
+				val passwordVerify = errors("passwordVerify").formattedMessage
 
 				val errorModel = RegisterModelErrors(email._2, password._2, passwordVerify._2)
 				val model = RegisterModel(email._1, "", "")
