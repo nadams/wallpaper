@@ -21,6 +21,7 @@
 			}
 		};
 	</script>
+	<script src="@routes.Assets.at("js/lodash.min.js")"></script>
 	<script src="@routes.Assets.at("js/views/profile/register.js")"></script>
 }
 
@@ -38,7 +39,9 @@
 						<!-- /ko -->
 					</div>
 					<div class="large-6 column">
-						<p>some placeholder text</p>
+						<ul data-bind="foreach: miscErrors">
+							<li data-bind="text: $data"></li>
+						</ul>
 					</div>
 				</div>
 				<div class="row">

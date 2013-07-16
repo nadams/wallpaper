@@ -11,6 +11,7 @@ wallpaper.profile.register.Model = (function ($, ko) {
 		this.usernameError = ko.observable();
 		this.passwordError = ko.observable();
 		this.passwordVerifyError = ko.observable();
+		this.miscErrors = ko.observableArray([]);
 
 		this.initialize(data);
 
@@ -32,6 +33,12 @@ wallpaper.profile.register.Model = (function ($, ko) {
 			this.usernameError(data.usernameError);
 			this.passwordError(data.passwordError);
 			this.passwordVerifyError(data.passwordVerifyError);
+
+			var that = this;
+
+			_.each(data.miscErrors, function(error) {
+				that.miscErrors.push(error);
+			});
 		},
 		valueExists: function(value) {
 			return value !== undefined && value.length > 0;
