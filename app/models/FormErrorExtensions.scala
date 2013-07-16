@@ -16,7 +16,7 @@ object FieldExtensions {
 object FormExtensions {
 	class FormError[T](form: Form[T])(implicit lang: Lang) {
 		def formattedMessages : Seq[String] = 
-			form.errors.map { error => Messages(error.message, error.args: _*) }
+			form.globalErrors.map { error => Messages(error.message, error.args: _*) }
 	}
 
 	implicit def formattedMessages[T](form: Form[T])(implicit lang: Lang) =
