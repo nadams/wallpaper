@@ -1,8 +1,6 @@
 package controllers
 
 import play.api.mvc._
-import play.api.data._
-import play.api.data.Forms._
 import play.api.i18n._
 import components._
 import models.profile._
@@ -27,7 +25,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def performLogin = Action { implicit request =>
-		val form = LoginForm.loginForm
+		val form = ProfileForms.loginForm
 
 		form.bindFromRequest.fold(
 			errors => BadRequest(html.profile.login(form.get)),
@@ -43,7 +41,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def performRegistration = Action { implicit request =>
-		val form = LoginForm.registerForm
+		val form = ProfileForms.registerForm
 
 		form.bindFromRequest.fold(
 			errors => {
@@ -59,29 +57,6 @@ object Profile extends Controller with Secured with ProvidesHeader {
 				case Some(x) => Redirect(routes.Application.index).withSession(SessionKeys.email -> x.email)
 				case None => InternalServerError("Could not register user")
 			}
-		)
-	}
-
-	object LoginForm {
-		val userService = UserComponentRegistry.userService
-
-		val loginForm = Form(
-			mapping(
-				"email" -> text, 
-				"password" -> text
-			) (ProfileModel.apply)(ProfileModel.unapply)
-			verifying ("error.invalidUsernamePassword", result => result match {
-				case ProfileModel(email, password) => userService.authenticate(email, password)
-			})
-		)  	 	
-
-		def registerForm = Form(
-			mapping(
-				"email" -> email.verifying("error.emailTaken", userService.userDoesNotExist(_)),
-				"password" -> nonEmptyText(minLength = 6),
-				"passwordVerify" -> nonEmptyText(minLength = 6)
-			) (RegisterModel.apply)(RegisterModel.unapply)
-			verifying("error.passwordsDoNotMatch", result => result.password == result.passwordVerify)
 		)
 	}
 }
