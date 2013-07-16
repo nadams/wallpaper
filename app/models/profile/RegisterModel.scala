@@ -16,7 +16,7 @@ case class RegisterModelErrors(
 	usernameError: Option[String],
 	passwordError: Option[String],
 	passwordVerifyError: Option[String],
-	miscErrors: Seq[String]
+	formErrors: Seq[String]
 )
 
 object RegisterModelErrors {

@@ -5,6 +5,7 @@ import play.api.i18n._
 import components._
 import models.profile._
 import models.FieldExtensions.formattedMessage
+import models.FormExtensions.formattedMessages
 import views._
 
 object Profile extends Controller with Secured with ProvidesHeader {
@@ -49,7 +50,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 				val password = errors("password").formattedMessage
 				val passwordVerify = errors("passwordVerify").formattedMessage
 
-				val errorModel = RegisterModelErrors(email._2, password._2, passwordVerify._2, Seq())
+				val errorModel = RegisterModelErrors(email._2, password._2, passwordVerify._2, errors.formattedMessages)
 				val model = RegisterModel(email._1, "", "")
 				BadRequest(html.profile.register(model, Some(errorModel))) 
 			},
