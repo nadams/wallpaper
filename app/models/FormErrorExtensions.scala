@@ -5,7 +5,7 @@ import play.api.i18n.{ Messages, Lang }
 
 object FieldExtensions {
 	class FieldError(field: Field)(implicit lang: Lang) {
-		def formattedMessage : Tuple2[String, Option[String]] =
+		def formattedMessage : Pair[String, Option[String]] =
 			(field.value.getOrElse(""), field.error.map { error => Messages(error.message, error.args: _*) })
 	}
 
