@@ -12,7 +12,8 @@ object ApplicationBuild extends Build {
     "mysql" % "mysql-connector-java" % "5.1.25",
     "org.mindrot" % "jbcrypt" % "0.3m",
     "joda-time" % "joda-time" % "2.1",
-    "org.joda" % "joda-convert" % "1.2"
+    "org.joda" % "joda-convert" % "1.2",
+    "org.mongodb" %% "casbah" % "2.6.2"
   )
 
   val compassTask = TaskKey[Unit]("compass", "Compile sass")
