@@ -1,5 +1,7 @@
 package models.profile
 
+import play.api.data._
+import play.api.data.Forms._
 import play.api.libs.json.Json
 
 case class RegisterModel(
@@ -21,4 +23,17 @@ case class RegisterModelErrors(
 
 object RegisterModelErrors {
 	implicit val writesRegisterModelErrors = Json.writes[RegisterModelErrors]
+}
+
+object RegisterForm {
+	val userService = components.UserComponentRegistry.userService
+
+	def apply() = Form(
+		mapping(
+			"email" -> email.verifying("error.emailTaken", userService.userDoesNotExist(_)),
+			"password" -> nonEmptyText(minLength = 6),
+			"passwordVerify" -> nonEmptyText(minLength = 6)
+		) (RegisterModel.apply)(RegisterModel.unapply)
+		verifying("error.passwordsDoNotMatch", result => result.password == result.passwordVerify)
+	)
 }

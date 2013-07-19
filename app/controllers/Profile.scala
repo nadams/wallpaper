@@ -18,7 +18,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def login = Action { implicit request =>
-		Ok(views.html.profile.login(ProfileModel("", "")))
+		Ok(views.html.profile.login(LoginModel("", ""), None))
 	}
 
 	def logout = Action { implicit request =>
@@ -26,10 +26,17 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def performLogin = Action { implicit request =>
-		val form = ProfileForms.loginForm
+		val form = LoginForm()
 
 		form.bindFromRequest.fold(
-			errors => BadRequest(html.profile.login(form.get)),
+			errors => { 
+				val email = errors("email").formattedMessage
+				val password = errors("password").formattedMessage
+				val errorModel = LoginModelErrors(email._2, password._2, errors.formattedMessages)
+				val loginModel = LoginModel(email._1, "")
+
+				BadRequest(views.html.profile.login(loginModel, Some(errorModel)))
+			},
 			user => Redirect(routes.Profile.index).withSession(SessionKeys.email -> user.email)
 		)
 	}
@@ -42,7 +49,7 @@ object Profile extends Controller with Secured with ProvidesHeader {
 	}
 
 	def performRegistration = Action { implicit request =>
-		val form = ProfileForms.registerForm
+		val form = RegisterForm()
 
 		form.bindFromRequest.fold(
 			errors => {
