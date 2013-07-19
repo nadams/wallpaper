@@ -28,39 +28,37 @@
 				<legend>Register</legend>
 				<div class="row">
 					<div class="large-4 columns">
-						<label for="email" data-bind="css: { 'error': usernameHasError }">Email</label>
-						<input type="text" id="email" name="email" value="@model.email" data-bind="css: { 'error': usernameHasError }" />
-						<!-- ko if: usernameHasError -->
-						<small data-bind="text: usernameError" class="error"></small>
-						<!-- /ko -->
+						<ul>
+							<li>
+								<label for="email" data-bind="css: { 'error': usernameHasError }">Email</label>
+								<input type="text" id="email" name="email" value="@model.email" data-bind="css: { 'error': usernameHasError }" />
+								<!-- ko if: usernameHasError -->
+								<small data-bind="text: usernameError" class="error"></small>
+								<!-- /ko -->
+							</li>
+							<li>
+								<label for="password" data-bind="css: { 'error': passwordHasError }">Password</label>
+								<input type="password" id="password" name="password" data-bind="css: { 'error': passwordHasError }" />
+								<!-- ko if: passwordHasError -->
+								<small data-bind="text: passwordError" class="error"></small>
+								<!-- /ko -->
+							</li>
+							<li>
+								<label for="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }">Verify Password</label>
+								<input type="password" id="passwordVerify" name="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }" />
+								<!-- ko if: passwordVerifyHasError -->
+								<small data-bind="text: passwordVerifyError" class="error"></small>
+								<!-- /ko -->
+							</li>
+							<li>
+								<button type="submit">Register</button>
+							</li>
+						</ul>
 					</div>
 					<div class="large-6 column">
 						<ul data-bind="foreach: formErrors">
 							<li><div data-alert="" class="form-error" data-bind="text: $data"></div></li>
 						</ul>
-					</div>
-				</div>
-				<div class="row">
-					<div class="large-4 columns">
-						<label for="password" data-bind="css: { 'error': passwordHasError }">Password</label>
-						<input type="password" id="password" name="password" data-bind="css: { 'error': passwordHasError }" />
-						<!-- ko if: passwordHasError -->
-						<small data-bind="text: passwordError" class="error"></small>
-						<!-- /ko -->
-					</div>
-				</div>
-				<div class="row">
-					<div class="large-4 columns">
-						<label for="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }">Verify Password</label>
-						<input type="password" id="passwordVerify" name="passwordVerify" data-bind="css: { 'error': passwordVerifyHasError }" />
-						<!-- ko if: passwordVerifyHasError -->
-						<small data-bind="text: passwordVerifyError" class="error"></small>
-						<!-- /ko -->
-					</div>
-				</div>
-				<div class="row">
-					<div class="large-4 columns">
-						<button type="submit">Register</button>
 					</div>
 				</div>
 			</fieldset>
