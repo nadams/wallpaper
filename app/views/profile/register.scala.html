@@ -8,16 +8,11 @@
 
 @extraScripts = {
 	<script>
-		var wallpaper = wallpaper || { };
-		wallpaper.profile = wallpaper.profile || { };
+		var wallpaper = wallpaper || {};
+		wallpaper.profile = wallpaper.profile || {};
 		wallpaper.profile.register = { 
 			data: {
-				errors: @Html(Json.toJson(errors).toString) || {},
-				elementIds: {
-					emailField: "email",
-					passwordField: "password",
-					passwordVerifyField: "passwordVerify"
-				}
+				errors: @Html(Json.toJson(errors).toString) || {}
 			}
 		};
 	</script>

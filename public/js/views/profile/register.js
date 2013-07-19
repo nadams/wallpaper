@@ -48,10 +48,10 @@ wallpaper.profile.register.Model = (function ($, ko) {
 	return Model;
 }(jQuery, ko));
 
-(function (ko) {
+(function (ko, wallpaper) {
 	"use strict";
 
 	var model = new wallpaper.profile.register.Model(wallpaper.profile.register.data.errors);
 
 	ko.applyBindings(model);
-}(ko));
+}(ko, wallpaper));
