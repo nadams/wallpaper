@@ -13,7 +13,7 @@ object ApplicationBuild extends Build {
     "org.mindrot" % "jbcrypt" % "0.3m",
     "joda-time" % "joda-time" % "2.1",
     "org.joda" % "joda-convert" % "1.2",
-    "org.mongodb" %% "casbah" % "2.6.2"
+    "se.radley" %% "play-plugins-salat" % "1.2"
   )
 
   val compassTask = TaskKey[Unit]("compass", "Compile sass")
@@ -24,6 +24,7 @@ object ApplicationBuild extends Build {
   val main = play.Project(appName, appVersion, appDependencies).settings(
     scalaVersion := "2.10.2",
     compassTaskSettings,
-    compile in Compile <<= (compile in Compile).dependsOn(compassTask)
+    compile in Compile <<= (compile in Compile).dependsOn(compassTask),
+    resolvers += Resolver.sonatypeRepo("snapshots")
   )
 }
