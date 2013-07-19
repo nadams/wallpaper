@@ -2,17 +2,17 @@
 
 @import play.api.libs.json.Json
 
+@extraCss = {
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")" />
+}
+
 @extraScripts = {
-	<script>
+  <script>
     var wallpaper = wallpaper || {};
     wallpaper.profile = wallpaper.profile || {};
     wallpaper.profile.data = @Html(Json.toJson(model).toString)
   </script>
   <script src="@routes.Assets.at("js/views/profile/profile.js")"></script>
-}
-
-@extraCss = {
-	<link rel="stylesheet" media="screen" href="@routes.Assets.at("css/views/profile.css")" />
 }
 
 @main("Profile", extraCss, extraScripts) {
