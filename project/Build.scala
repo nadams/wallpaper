@@ -25,6 +25,8 @@ object ApplicationBuild extends Build {
     scalaVersion := "2.10.2",
     compassTaskSettings,
     compile in Compile <<= (compile in Compile).dependsOn(compassTask),
-    resolvers += Resolver.sonatypeRepo("snapshots")
+    resolvers += Resolver.sonatypeRepo("snapshots"),
+    routesImport += "se.radley.plugin.salat.Binders._",
+    templatesImport += "org.bson.types.ObjectId"
   )
 }
